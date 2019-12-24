@@ -7,7 +7,7 @@
       <el-breadcrumb-item>用户列表</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <!-- 卡片式图区域 -->
+    <!-- 卡片视图区域 -->
     <el-card>
       <!-- 搜索添加区域 -->
       <el-row :gutter="20">
