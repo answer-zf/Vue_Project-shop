@@ -21,9 +21,9 @@ axios.interceptors.request.use(config => {
   return config
 })
 Vue.prototype.$http = axios
-
 Vue.config.productionTip = false
 
+// 挂载第三方插件 vue-table-with-tree-grid
 Vue.component('tree-table', TreeTable)
 
 // 自定义全局 时间格式化 过滤器
