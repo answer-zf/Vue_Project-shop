@@ -11,6 +11,13 @@ import TreeTable from 'vue-table-with-tree-grid'
 // 导入字体图标
 import './assets/fonts/iconfont.css'
 
+// 导入富文本编辑器
+import VueQuillEditor from 'vue-quill-editor'
+// require styles 导入富文本编辑器对应的样式
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
 // 配置 axios
 import axios from 'axios'
 // 配合请求根路径
@@ -23,8 +30,10 @@ axios.interceptors.request.use(config => {
 Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
-// 挂载第三方插件 vue-table-with-tree-grid
+// 挂载第三方插件 vue-table-with-tree-grid（可下拉表格）
 Vue.component('tree-table', TreeTable)
+// 将富文本编辑器注册文全局可用组件
+Vue.use(VueQuillEditor)
 
 // 自定义全局 时间格式化 过滤器
 Vue.filter('dataFormat', function(originVal) {
