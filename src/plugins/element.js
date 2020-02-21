@@ -1,4 +1,5 @@
 import Vue from 'vue'
+
 import {
   Button,
   Form,
@@ -39,6 +40,10 @@ import {
   Upload
 } from 'element-ui'
 
+// Timeline 组件自行挂载
+import Timeline from './timeline/index.js'
+import TimelineItem from './timeline-item/index.js'
+
 Vue.use(Button)
 Vue.use(Form)
 Vue.use(FormItem)
@@ -74,6 +79,8 @@ Vue.use(Step)
 Vue.use(CheckboxGroup)
 Vue.use(Checkbox)
 Vue.use(Upload)
+Vue.use(Timeline)
+Vue.use(TimelineItem)
 
 // 全局挂载 弹框提示组件
 Vue.prototype.$message = Message

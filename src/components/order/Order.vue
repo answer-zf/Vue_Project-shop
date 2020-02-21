@@ -10,7 +10,7 @@
     <el-card>
       <el-row>
         <el-col :span="8">
-          <el-input placeholder="请输入内容" v-model="searchKey">
+          <el-input placeholder="请输入内容">
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
         </el-col>
@@ -41,7 +41,12 @@
               size="mini"
               @click="showEditAddressDialog"
             ></el-button>
-            <el-button type="success" icon="el-icon-location" size="mini"></el-button>
+            <el-button
+              type="success"
+              icon="el-icon-location"
+              size="mini"
+              @click="showProgressDialog"
+            ></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -58,7 +63,12 @@
       ></el-pagination>
 
       <!-- 修改地址对话框 -->
-      <el-dialog title="修改地址" :visible.sync="editAddressDialogVisible" width="50%">
+      <el-dialog
+        title="修改地址"
+        :visible.sync="editAddressDialogVisible"
+        width="50%"
+        @close="addressDialogClosed"
+      >
         <el-form
           :model="addressForm"
           :rules="addressFormRules"
@@ -77,6 +87,20 @@
           <el-button type="primary" @click="editAddressDialogVisible = false">确 定</el-button>
         </span>
       </el-dialog>
+
+      <!-- 物流进度对话框 -->
+      <el-dialog title="物流进度" :visible.sync="progressDialogVisible" width="50%">
+        <!-- 时间线 -->
+        <el-timeline>
+          <el-timeline-item
+            v-for="(activity, index) in progressInfo"
+            :key="index"
+            :timestamp="activity.time"
+          >
+            {{ activity.context }}
+          </el-timeline-item>
+        </el-timeline>
+      </el-dialog>
     </el-card>
   </el-row>
 </template>
@@ -88,7 +112,6 @@ import cityData from './citydata.js'
 export default {
   data() {
     return {
-      searchKey: '',
       queryInfo: {
         query: '',
         pagenum: 1,
@@ -108,7 +131,12 @@ export default {
         address1: [{ required: true, message: '选择省市区/县', trigger: 'blur' }],
         address2: [{ required: true, message: '请填写详细地址', trigger: 'blur' }]
       },
-      cityData
+      // 省市联动数据导入
+      cityData,
+      // 控制物流进度对话框的显示和隐藏
+      progressDialogVisible: false,
+      // 物流信息数据
+      progressInfo: []
     }
   },
   created() {
@@ -135,9 +163,27 @@ export default {
     // 展示修改地址对话框
     showEditAddressDialog() {
       this.editAddressDialogVisible = true
+    },
+    // 关闭修改对话框重置表单数据
+    addressDialogClosed() {
+      this.$refs.addressFormRef.resetFields()
+    },
+    // 展示物流进度对话框
+    async showProgressDialog() {
+      const { data: res } = await this.$http.get('/kuaidi/1106975712662')
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.progressInfo = res.data
+      this.progressDialogVisible = true
+      console.log(this.progressInfo)
     }
   }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import '../../plugins/timeline/timeline.css';
+@import '../../plugins/timeline-item/timeline-item.css';
+.el-cascader {
+  width: 100%;
+}
+</style>
